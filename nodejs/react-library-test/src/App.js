@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./Home";
 import Navigation from "./Navigation";
 import AxiosTest from "./library-pages/Axios-Test";
+import FileUpload from "./library-pages/FileUpload";
 
 export default class App extends React.Component {
   render(){
@@ -12,7 +13,8 @@ export default class App extends React.Component {
             <Navigation />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/axios-test" component={AxiosTest} />
+              <Route exact path="/axiosTest" component={AxiosTest} />
+                <Route exact path="/fileUpload" component={FileUpload} />
             </Switch>
           </div>
         </Router>

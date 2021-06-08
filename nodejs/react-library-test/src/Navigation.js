@@ -13,8 +13,13 @@ export default class Navigation extends React.Component {
                         </Link>
                     </li>
                     <li>
-                        <Link className="nav-link" to="/axios-test">
+                        <Link className="nav-link" to="/axiosTest">
                             Axios
+                        </Link>
+                    </li>
+                    <li>
+                        <Link className="nav-link" to="/fileUpload">
+                            FileUpload
                         </Link>
                     </li>
                 </ul>

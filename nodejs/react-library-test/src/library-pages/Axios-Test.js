@@ -15,7 +15,10 @@ export default class AxiosTest extends React.Component {
             console.log(error.toJSON())
         })
         return(
-            <h2>Axios</h2>
+            <div>
+                <h2>Axios</h2>
+                <input type="file"/>
+            </div>
         )
     }
 }
