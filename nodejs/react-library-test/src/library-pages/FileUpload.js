@@ -1,6 +1,14 @@
 import * as React from "react";
 import axios from "axios";
 
+
+const config = {
+    auth: {
+        username: 'combineFileServer',
+        password: '~isCool!~'
+    }
+}
+
 export default class FileUpload extends React.Component {
     constructor(props) {
         super(props);
@@ -32,12 +40,14 @@ export default class FileUpload extends React.Component {
             console.log(files)
             Array.from(files).forEach(file => {
                 console.log(file);
-                data.append('file', file);
+                data.append(targetName, file);
             })
         })
-        axios.post(targetUrl, data).then(res =>{
+        axios.post(targetUrl, data, config).then(res =>{
+            console.log("Response:");
             console.log(res);
         }).catch(err => {
+            console.log("Error:")
             console.log(err)
             }
         )
