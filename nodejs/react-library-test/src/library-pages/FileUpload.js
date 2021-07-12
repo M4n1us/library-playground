@@ -2,20 +2,28 @@ import * as React from "react";
 import axios from "axios";
 
 
-const config = {
-    auth: {
-        username: 'combineFileServer',
-        password: '~isCool!~'
-    }
-}
+
 
 export default class FileUpload extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            files: {}
+            files: {},
+            uploadProgress: undefined
+        }
+        this.config = {
+            auth: {
+                username: 'combineFileServer',
+                password: '~isCool!~'
+            },
+            onUploadProgress: this.progress.bind(this)
         }
 
+    }
+
+    progress(event) {
+        let progress = Math.round( (event.loaded * 100) / event.total );
+        this.setState({uploadProgress: progress});
     }
 
     render() {
@@ -26,6 +34,7 @@ export default class FileUpload extends React.Component {
                 <input type="file" onChange={(event => this.fileUploadChange("Gerber", event))}/>
                 <button type="button" onClick={() => this.uploadFiles("http://localhost:3001/upload")}>Upload
                 </button>
+                {this.state.uploadProgress !== undefined && <p> Upload is {this.state.uploadProgress}% completed.</p>}
             </div>
         )
     }
@@ -43,7 +52,7 @@ export default class FileUpload extends React.Component {
                 data.append(targetName, file);
             })
         })
-        axios.post(targetUrl, data, config).then(res =>{
+        axios.post(targetUrl, data, this.config).then(res =>{
             console.log("Response:");
             console.log(res);
         }).catch(err => {
