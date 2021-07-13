@@ -4,8 +4,11 @@ const multer  = require('multer'); //middleware for multipart requests in expres
 const basicAuth = require('express-basic-auth') //middleware for basic auth in express
 const app = express();
 const port = 3001;
+const crypto = require("crypto");
+const fs = require('fs');
 
 const baseUrl = "https://files.combine.pria.at/"
+const basePath = "./upload/"
 
 //cors config
 const users = {
@@ -19,12 +22,26 @@ const storage = multer.diskStorage({
 })
 
 function createDestination(req, file, cb) { //called for each file
-    console.log("destination")
-    cb(null, './upload')
+    let folderbase = file.originalname + crypto.randomBytes(16).toString("hex");
+    let folderLocation = basePath + crypto.createHash("sha256").update(folderbase).digest("hex");
+    if (!fs.existsSync(folderLocation)){
+        fs.mkdirSync(folderLocation);
+    } else {
+        console.log("Foldername collision");
+    }
+    console.log("destination: " + folderLocation)
+    cb(null, folderLocation)
 }
 
 function createFilename(req, file, cb) {
-    cb(null, file.originalname)
+    let alteredFilename = file.originalname + crypto.randomBytes(16).toString("hex");
+    let tmp = file.originalname.split('\.');
+    let fileEnding = "";
+    if(tmp.length > 1){
+        fileEnding = "." + tmp.pop();
+    }
+    let finalName = crypto.createHash("sha256").update(alteredFilename).digest("hex") + fileEnding;
+    cb(null, finalName)
 }
 
 const upload = multer({storage: storage})
@@ -41,7 +58,7 @@ app.post('/upload',  basicAuth(users), upload.any(), (req, res) => {
     console.log("oh boi");
     let ret = {}
     for(let file of req.files){
-        ret[file.fieldname] = file.path;
+        ret[file.fieldname] = baseUrl + file.path.replace(/\\/g,"/");
     }
     res.status(200).send(ret);
 })
