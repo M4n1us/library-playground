@@ -18,7 +18,6 @@ export default class FileUpload extends React.Component {
             },
             onUploadProgress: this.progress.bind(this)
         }
-
     }
 
     progress(event) {
@@ -60,14 +59,13 @@ export default class FileUpload extends React.Component {
             console.log(err)
             }
         )
-
     }
 
     fileUploadChange(fieldName, event){
         let currentFiles = this.state.files;
         currentFiles[fieldName] = event.target.files;
         this.setState({
-            file: currentFiles
+            files: currentFiles
         });
     }
 }

@@ -5,6 +5,8 @@ const basicAuth = require('express-basic-auth') //middleware for basic auth in e
 const app = express();
 const port = 3001;
 
+const baseUrl = "https://files.combine.pria.at/"
+
 //cors config
 const users = {
     users: {'combineFileServer': '~isCool!~'}
@@ -37,7 +39,11 @@ app.get('/endpoint', (req, res) => {
 app.post('/upload',  basicAuth(users), upload.any(), (req, res) => {
     console.log(req.files); //data about files
     console.log("oh boi");
-    res.status(200).send("Received.");
+    let ret = {}
+    for(let file of req.files){
+        ret[file.fieldname] = file.path;
+    }
+    res.status(200).send(ret);
 })
 
 //express start
