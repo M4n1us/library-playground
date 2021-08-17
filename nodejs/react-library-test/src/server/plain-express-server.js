@@ -3,7 +3,7 @@ const cors = require('cors'); //middleware for cors requests in express
 const multer  = require('multer'); //middleware for multipart requests in express
 const basicAuth = require('express-basic-auth') //middleware for basic auth in express
 const app = express();
-const port = 3001;
+const port = 80;
 const crypto = require("crypto");
 const fs = require('fs');
 
